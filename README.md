@@ -1,2 +1,2 @@
 # rust-python-leetcode
-practice
+leetcode with rust and python
