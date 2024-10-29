@@ -1,5 +1,5 @@
 class Solution:
-    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:   
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:    # type: ignore
         res = []   
         used = [False] * len(candidates)
         def bt(target, combs, idx):
