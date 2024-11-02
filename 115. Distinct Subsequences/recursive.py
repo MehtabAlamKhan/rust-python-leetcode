@@ -11,9 +11,10 @@ class Solution:
             res = 0
             if (s[i] == t[j]):
                 res += dp(i + 1, j + 1) 
-            res += dp(i + 1, j)
-            
+            res += dp(i + 1, j)            
             memo[i,j] = res
             return res        
-        return dp(0, 0)
+        return dp(0, 0)    
+a = Solution()
+print(a.numDistinct("a", ""))
             
