@@ -1,5 +1,5 @@
 class Solution:
-    def maxCoins(self, nums: List[int]) -> int:
+    def maxCoins(self, nums: List[int]) -> int: # type: ignore
         memo = {}
         nums = [1] + nums + [1]
 
