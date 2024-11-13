@@ -5,7 +5,7 @@
 //   pub left: Option<Rc<RefCell<TreeNode>>>,
 //   pub right: Option<Rc<RefCell<TreeNode>>>,
 // }
-
+//
 // impl TreeNode {
 //   #[inline]
 //   pub fn new(val: i32) -> Self {
@@ -21,15 +21,11 @@ use std::rc::Rc;
 impl Solution {
     pub fn invert_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Option<Rc<RefCell<TreeNode>>> {
         if let Some(node) = root.clone() {
-            let mut node_borrowed = node.borrow_mut();
-
-            // Recursively invert the left and right subtrees
-            let left = Self::invert_tree(node_borrowed.left.take());
-            let right = Self::invert_tree(node_borrowed.right.take());
-
-            // Swap the left and right children
-            node_borrowed.left = right;
-            node_borrowed.right = left;
+            let mut borrowed_node = node.borrow_mut();
+            let left = Self::invert_tree(borrowed_node.left.take());
+            let right = Self::invert_tree(borrowed_node.right.take());
+            borrowed_node.left = right;
+            borrowed_node.right = left;
         }
         root
     }
