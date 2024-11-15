@@ -26,27 +26,22 @@ impl Solution {
         if root.is_none() {
             return false;
         }
-        if Self::helper(root.clone(), sub_root.clone()) {
+        if Self::helper(&root, &sub_root) {
             return true;
         }
-        if let Some(root_node) = root {
-            return Self::is_subtree(root_node.borrow().left.clone(), sub_root.clone())
-                || Self::is_subtree(root_node.borrow().right.clone(), sub_root.clone());
-        }
-        false
+        let root_node = root.unwrap();
+        Self::is_subtree(root_node.borrow().left.clone(), sub_root.clone())
+            || Self::is_subtree(root_node.borrow().right.clone(), sub_root)
     }
-    pub fn helper(p: Option<Rc<RefCell<TreeNode>>>, q: Option<Rc<RefCell<TreeNode>>>) -> bool {
-        if p.is_none() && q.is_none() {
-            return true;
-        }
-
-        if let (Some(left), Some(right)) = (p, q) {
-            if left.borrow().val != right.borrow().val {
-                return false;
+    pub fn helper(p: &Option<Rc<RefCell<TreeNode>>>, q: &Option<Rc<RefCell<TreeNode>>>) -> bool {
+        match (p, q) {
+            (None, None) => true,
+            (Some(left), Some(right)) => {
+                left.borrow().val == right.borrow().val
+                    && Self::helper(&left.borrow().left.clone(), &right.borrow().left)
+                    && Self::helper(&left.borrow().right.clone(), &right.borrow().right)
             }
-            return Self::helper(left.borrow().left.clone(), right.borrow().left.clone())
-                && Self::helper(left.borrow().right.clone(), right.borrow().right.clone());
+            _ => false,
         }
-        false
     }
 }
