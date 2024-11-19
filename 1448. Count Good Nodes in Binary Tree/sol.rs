@@ -20,30 +20,17 @@ use std::cell::RefCell;
 use std::rc::Rc;
 impl Solution {
     pub fn good_nodes(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
-        let mut q: Vec<(Rc<RefCell<TreeNode>>, i32)> =
-            vec![(root.clone().unwrap(), root.unwrap().borrow().val)];
+        let mut q = vec![(root, i32::MIN)];
         let mut res = 0;
-        while let Some((node, max_val)) = q.pop() {
-            if node.borrow().val >= max_val {
-                res += 1;
-            }
-            if node.borrow().left.is_some() {
-                q.insert(
-                    0,
-                    (
-                        node.borrow().left.clone().unwrap(),
-                        node.borrow().val.max(max_val),
-                    ),
-                );
-            }
-            if node.borrow().right.is_some() {
-                q.insert(
-                    0,
-                    (
-                        node.borrow().right.clone().unwrap(),
-                        node.borrow().val.max(max_val),
-                    ),
-                );
+        while let Some((node, mut max_val)) = q.pop() {
+            if let Some(node_rc) = node {
+                let mut node_ref = node_rc.borrow_mut();
+                if node_ref.val >= max_val {
+                    res += 1;
+                    max_val = node_ref.val;
+                }
+                q.push((node_ref.left.take(), max_val));
+                q.push((node_ref.right.take(), max_val));
             }
         }
         res
